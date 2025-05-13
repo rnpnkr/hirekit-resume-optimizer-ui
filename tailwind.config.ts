@@ -1,4 +1,5 @@
 import type { Config } from "tailwindcss";
+import tailwindcssAnimate from "tailwindcss-animate";
 
 export default {
   darkMode: ["class"],
@@ -43,8 +44,8 @@ export default {
           foreground: '#FFFFFF'
         },
         success: {
-          DEFAULT: '#30D158', // Standardized Apple's success green
-          hover: '#2BB94E',
+          DEFAULT: '#00C2A8', // Standardized to accent green
+          hover: '#00B09A',
           foreground: '#FFFFFF'
         },
         destructive: {
@@ -132,5 +133,5 @@ export default {
       }
     },
   },
-  plugins: [require("tailwindcss-animate")],
+  plugins: [tailwindcssAnimate],
 } satisfies Config;

@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import Header from '@/components/Header';
 import LandingPage from '@/components/LandingPage';
@@ -123,7 +122,7 @@ const Index = () => {
   
   return (
     <div className="min-h-screen flex flex-col bg-[#F8FAFC]">
-      {currentScreen !== AppScreen.AUTH && (
+      {currentScreen !== AppScreen.AUTH && currentScreen !== AppScreen.LANDING && (
         <Header 
           isAuthenticated={isAuthenticated}
           userName={userName}

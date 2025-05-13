@@ -1,7 +1,7 @@
-
 import React from 'react';
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
+import { motion } from "framer-motion";
 
 interface HeaderProps {
   isAuthenticated?: boolean;
@@ -9,13 +9,32 @@ interface HeaderProps {
   userName?: string;
 }
 
+const navLinks = [
+  { title: "Features", href: "#features" },
+  { title: "Pricing", href: "#" },
+  { title: "Templates", href: "#" },
+  { title: "About", href: "#" },
+  { title: "Blog", href: "#" },
+  { title: "Contact", href: "#" },
+];
+
+const headerVariants = {
+  hidden: { opacity: 0, y: -20 },
+  visible: { opacity: 1, y: 0, transition: { duration: 0.6 } },
+};
+
 const Header = ({
   isAuthenticated = false,
   onAuthClick,
   userName
 }: HeaderProps) => {
   return (
-    <header className="w-full bg-white shadow-sm py-4">
+    <motion.header
+      className="w-full bg-white shadow-sm py-4"
+      variants={headerVariants}
+      initial="hidden"
+      animate="visible"
+    >
       <div className="container mx-auto flex justify-between items-center">
         <div className="flex items-center space-x-2">
           <svg width="32" height="32" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -26,7 +45,17 @@ const Header = ({
           </svg>
           <h1 className="text-lg md:text-xl font-bold text-secondary">HireKit</h1>
         </div>
-        
+        <nav className="hidden md:flex items-center space-x-6">
+          {navLinks.map(link => (
+            <a
+              key={link.title}
+              href={link.href}
+              className="text-gray-700 hover:text-primary transition-colors text-sm font-medium"
+            >
+              {link.title}
+            </a>
+          ))}
+        </nav>
         {isAuthenticated ? (
           <div className="flex items-center space-x-3">
             <span className="hidden md:block text-sm font-medium">{userName || 'User'}</span>
@@ -37,13 +66,13 @@ const Header = ({
         ) : (
           <Button 
             onClick={onAuthClick}
-            className="bg-primary hover:bg-primary-hover text-white"
+            className="bg-primary hover:bg-primary-hover text-white px-6 py-2 text-sm font-semibold"
           >
-            Sign In
+            Upload Your Resume
           </Button>
         )}
       </div>
-    </header>
+    </motion.header>
   );
 };
 

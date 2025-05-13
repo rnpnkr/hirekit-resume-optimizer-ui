@@ -1,4 +1,3 @@
-
 import React, { useEffect, useRef, useState } from 'react';
 import { motion } from "framer-motion";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -202,17 +201,20 @@ const DemoSection = () => {
             <div className="flex justify-between items-center mb-4">
               <h3 className="font-semibold text-xl">Resume Preview</h3>
               <motion.div
-                whileHover={{ scale: 1.02 }}
-                whileTap={{ scale: 0.98 }}
-                transition={{ duration: 0.2 }}
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+                className="relative"
               >
                 <Button
                   onClick={() => setShowOriginalResume(!showOriginalResume)}
                   variant="outline"
-                  className="text-primary border-primary hover:bg-primary/5 transition-all duration-200"
+                  className="text-primary border-primary hover:bg-primary/5 transition-all duration-200 relative z-10"
                 >
                   {showOriginalResume ? "Show Optimized" : "Show Original"}
                 </Button>
+                {!showOriginalResume && (
+                  <div className="absolute inset-0 bg-primary rounded-md opacity-30 animate-ping duration-1000 z-0"></div>
+                )}
               </motion.div>
             </div>
             
