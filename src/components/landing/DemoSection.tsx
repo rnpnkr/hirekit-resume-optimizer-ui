@@ -3,13 +3,15 @@ import React, { useEffect, useRef, useState } from 'react';
 import { motion } from "framer-motion";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Progress } from "@/components/ui/progress";
-import { Star } from "lucide-react";
+import { Star, Code, Database, LayoutDashboard } from "lucide-react";
+import { Button } from "@/components/ui/button";
 
 // Job description data with matching resume content
 const jobDescriptions = [
   {
     id: "software-engineer",
     title: "Frontend Developer",
+    icon: <Code className="mr-2 h-4 w-4" />,
     requirements: [
       "React expertise", 
       "TypeScript knowledge", 
@@ -17,16 +19,17 @@ const jobDescriptions = [
       "Performance optimization"
     ],
     resumeItems: [
-      "Led front-end development using <span class=\"bg-green-100 text-green-700 px-1 rounded\">React.js</span> for the company website",
-      "Built responsive user interfaces with <span class=\"bg-green-100 text-green-700 px-1 rounded\">TypeScript</span> and modern JavaScript",
-      "Implemented <span class=\"bg-green-100 text-green-700 px-1 rounded\">responsive design</span> techniques for all projects",
-      "Applied <span class=\"bg-green-100 text-green-700 px-1 rounded\">performance optimization</span> strategies, reducing loading times by 40%"
+      "Led front-end development using <span class=\"bg-green-100 text-success px-1 rounded\">React.js</span> for the company website",
+      "Built responsive user interfaces with <span class=\"bg-green-100 text-success px-1 rounded\">TypeScript</span> and modern JavaScript",
+      "Implemented <span class=\"bg-green-100 text-success px-1 rounded\">responsive design</span> techniques for all projects",
+      "Applied <span class=\"bg-green-100 text-success px-1 rounded\">performance optimization</span> strategies, reducing loading times by 40%"
     ],
     atsScore: 92
   },
   {
     id: "data-scientist",
     title: "Data Scientist",
+    icon: <Database className="mr-2 h-4 w-4" />,
     requirements: [
       "Python programming", 
       "Machine learning", 
@@ -34,16 +37,17 @@ const jobDescriptions = [
       "Statistical analysis"
     ],
     resumeItems: [
-      "Developed data pipelines using <span class=\"bg-green-100 text-green-700 px-1 rounded\">Python</span> for automated reporting",
-      "Built and deployed <span class=\"bg-green-100 text-green-700 px-1 rounded\">machine learning</span> models for predictive analytics",
-      "Created interactive <span class=\"bg-green-100 text-green-700 px-1 rounded\">data visualizations</span> to communicate findings to stakeholders",
-      "Conducted <span class=\"bg-green-100 text-green-700 px-1 rounded\">statistical analysis</span> to identify trends and business opportunities"
+      "Developed data pipelines using <span class=\"bg-green-100 text-success px-1 rounded\">Python</span> for automated reporting",
+      "Built and deployed <span class=\"bg-green-100 text-success px-1 rounded\">machine learning</span> models for predictive analytics",
+      "Created interactive <span class=\"bg-green-100 text-success px-1 rounded\">data visualizations</span> to communicate findings to stakeholders",
+      "Conducted <span class=\"bg-green-100 text-success px-1 rounded\">statistical analysis</span> to identify trends and business opportunities"
     ],
     atsScore: 88
   },
   {
     id: "product-manager",
     title: "Product Manager",
+    icon: <LayoutDashboard className="mr-2 h-4 w-4" />,
     requirements: [
       "User research", 
       "Agile methodologies", 
@@ -51,10 +55,10 @@ const jobDescriptions = [
       "Stakeholder management"
     ],
     resumeItems: [
-      "Conducted extensive <span class=\"bg-green-100 text-green-700 px-1 rounded\">user research</span> to identify customer pain points and needs",
-      "Led product development using <span class=\"bg-green-100 text-green-700 px-1 rounded\">Agile methodologies</span>, improving delivery times by 30%",
-      "Created and maintained <span class=\"bg-green-100 text-green-700 px-1 rounded\">product roadmaps</span> aligned with business objectives",
-      "Managed relationships with key <span class=\"bg-green-100 text-green-700 px-1 rounded\">stakeholders</span> across engineering, design, and business teams"
+      "Conducted extensive <span class=\"bg-green-100 text-success px-1 rounded\">user research</span> to identify customer pain points and needs",
+      "Led product development using <span class=\"bg-green-100 text-success px-1 rounded\">Agile methodologies</span>, improving delivery times by 30%",
+      "Created and maintained <span class=\"bg-green-100 text-success px-1 rounded\">product roadmaps</span> aligned with business objectives",
+      "Managed relationships with key <span class=\"bg-green-100 text-success px-1 rounded\">stakeholders</span> across engineering, design, and business teams"
     ],
     atsScore: 94
   }
@@ -95,7 +99,7 @@ const DemoSection = () => {
   }, [demoRef]);
 
   return (
-    <section ref={demoRef} className="py-16 bg-[#F8FAFC]">
+    <section ref={demoRef} className="py-16 bg-[#F8FAFC]" id="demo">
       <div className="container mx-auto px-4">
         <motion.h2 
           className="text-3xl font-bold text-center mb-4"
@@ -127,15 +131,24 @@ const DemoSection = () => {
               setShowOriginalResume(false);
             }}
           >
-            <TabsList className="grid w-full grid-cols-1 md:grid-cols-3 gap-2">
+            <TabsList className="grid w-full grid-cols-1 md:grid-cols-3 gap-2 p-1 bg-gray-100 rounded-lg">
               {jobDescriptions.map((job) => (
-                <TabsTrigger 
-                  key={job.id} 
-                  value={job.id}
-                  className="data-[state=active]:bg-primary data-[state=active]:text-white"
+                <motion.div
+                  key={job.id}
+                  whileHover={{ scale: 1.02 }}
+                  whileTap={{ scale: 0.98 }}
+                  transition={{ duration: 0.2 }}
                 >
-                  {job.title}
-                </TabsTrigger>
+                  <TabsTrigger 
+                    value={job.id}
+                    className="data-[state=active]:bg-primary data-[state=active]:text-white w-full py-2.5 px-4 transition-all duration-300"
+                  >
+                    <span className="flex items-center justify-center">
+                      {job.icon}
+                      {job.title}
+                    </span>
+                  </TabsTrigger>
+                </motion.div>
               ))}
             </TabsList>
           </Tabs>
@@ -144,7 +157,7 @@ const DemoSection = () => {
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
           {/* Job Description Panel */}
           <motion.div 
-            className="bg-white p-6 rounded-xl shadow-sm"
+            className="bg-white p-6 rounded-xl shadow-card"
             initial={{ opacity: 0, x: -30 }}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
@@ -152,7 +165,10 @@ const DemoSection = () => {
             key={`jd-${selectedJob.id}`}
             animate={{ opacity: 1 }}
           >
-            <h3 className="font-semibold text-xl mb-4">Job Description: {selectedJob.title}</h3>
+            <h3 className="font-semibold text-xl mb-4 flex items-center">
+              {selectedJob.icon}
+              <span>Job Description: {selectedJob.title}</span>
+            </h3>
             <div className="bg-gray-50 p-4 rounded-lg">
               <h5 className="font-semibold mb-3">Requirements:</h5>
               <ul className="space-y-3 mb-4">
@@ -176,7 +192,7 @@ const DemoSection = () => {
           
           {/* Resume Panel */}
           <motion.div 
-            className="bg-white p-6 rounded-xl shadow-sm"
+            className="bg-white p-6 rounded-xl shadow-card"
             initial={{ opacity: 0, x: 30 }}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
@@ -185,12 +201,19 @@ const DemoSection = () => {
           >
             <div className="flex justify-between items-center mb-4">
               <h3 className="font-semibold text-xl">Resume Preview</h3>
-              <button
-                onClick={() => setShowOriginalResume(!showOriginalResume)}
-                className="text-sm px-3 py-1 border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors"
+              <motion.div
+                whileHover={{ scale: 1.02 }}
+                whileTap={{ scale: 0.98 }}
+                transition={{ duration: 0.2 }}
               >
-                {showOriginalResume ? "Show Optimized" : "Show Original"}
-              </button>
+                <Button
+                  onClick={() => setShowOriginalResume(!showOriginalResume)}
+                  variant="outline"
+                  className="text-primary border-primary hover:bg-primary/5 transition-all duration-200"
+                >
+                  {showOriginalResume ? "Show Optimized" : "Show Original"}
+                </Button>
+              </motion.div>
             </div>
             
             <div className="bg-white border border-gray-200 rounded-lg p-4 shadow-sm">
@@ -230,7 +253,7 @@ const DemoSection = () => {
         
         {/* ATS Score Meter */}
         <motion.div 
-          className="mt-12 max-w-3xl mx-auto p-6 bg-white rounded-xl shadow-md"
+          className="mt-12 max-w-3xl mx-auto p-6 bg-white rounded-xl shadow-card"
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
@@ -240,9 +263,9 @@ const DemoSection = () => {
           <h3 className="text-lg font-semibold mb-4 text-center">ATS Compatibility Score</h3>
           
           {showOriginalResume ? (
-            <div className="flex items-center mb-2">
-              <span className="text-gray-600 w-20">Original:</span>
-              <div className="flex-1 h-6 bg-gray-200 rounded-full overflow-hidden mr-2">
+            <div className="flex items-center mb-6">
+              <span className="text-gray-600 w-20 mr-4">Original:</span>
+              <div className="flex-1 h-6 bg-gray-200 rounded-full overflow-hidden mr-4">
                 <motion.div 
                   className="h-full bg-red-400 rounded-full"
                   initial={{ width: "0%" }}
@@ -251,7 +274,7 @@ const DemoSection = () => {
                 ></motion.div>
               </div>
               <motion.span 
-                className="font-semibold w-16"
+                className="font-semibold min-w-[40px] text-right"
                 initial={{ opacity: 0 }}
                 animate={{ opacity: showATSScore ? 1 : 0 }}
                 transition={{ duration: 0.5, delay: 2 }}
@@ -260,18 +283,18 @@ const DemoSection = () => {
               </motion.span>
             </div>
           ) : (
-            <div className="flex items-center mb-2">
-              <span className="text-gray-600 w-20">Optimized:</span>
-              <div className="flex-1 bg-gray-200 rounded-full h-6 overflow-hidden mr-2">
+            <div className="flex items-center mb-6">
+              <span className="text-gray-600 w-20 mr-4">Optimized:</span>
+              <div className="flex-1 bg-gray-200 rounded-full h-6 overflow-hidden mr-4">
                 <motion.div 
-                  className="bg-green-500 h-full rounded-full"
+                  className="bg-success h-full rounded-full"
                   initial={{ width: "0%" }}
                   animate={{ width: showATSScore ? `${selectedJob.atsScore}%` : "0%" }}
                   transition={{ duration: 1.5, delay: 0.5 }}
                 ></motion.div>
               </div>
               <motion.div 
-                className="font-semibold w-16 flex items-center"
+                className="font-semibold min-w-[40px] text-right flex items-center justify-end"
                 initial={{ opacity: 0 }}
                 animate={{ opacity: showATSScore ? 1 : 0 }}
                 transition={{ duration: 0.5, delay: 2 }}

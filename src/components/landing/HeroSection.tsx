@@ -11,10 +11,10 @@ interface HeroSectionProps {
 
 const HeroSection = ({ onGetStarted, onScrollToDemo }: HeroSectionProps) => {
   return (
-    <section className="relative bg-gradient-to-b from-[#F8FAFC] to-[#EEF2F6] py-16 md:py-24 overflow-hidden">
+    <section className="relative bg-gradient-to-b from-[#F8FAFC] to-[#EEF2F6] pt-24 pb-16 md:py-24 overflow-hidden">
       <div className="absolute opacity-20 top-0 left-0 w-full h-full">
         <div className="absolute w-40 h-40 bg-primary rounded-full blur-3xl -top-10 -left-10 animate-pulse"></div>
-        <div className="absolute w-40 h-40 bg-accent rounded-full blur-3xl top-20 right-20 animate-pulse" style={{ animationDelay: "1s" }}></div>
+        <div className="absolute w-40 h-40 bg-success rounded-full blur-3xl top-20 right-20 animate-pulse" style={{ animationDelay: "1s" }}></div>
       </div>
       <div className="container mx-auto px-4 relative z-10">
         <div className="flex flex-col md:flex-row items-center">
@@ -36,7 +36,7 @@ const HeroSection = ({ onGetStarted, onScrollToDemo }: HeroSectionProps) => {
               transition={{ duration: 0.6, delay: 0.2 }}
             >
               Our AI agents analyze job descriptions and optimize your resume to 
-              <span className="bg-accent/20 text-accent font-semibold px-2 py-1 ml-1 rounded">
+              <span className="bg-success/20 text-success font-semibold px-2 py-1 ml-1 rounded">
                 increase interview chances by 3x
               </span>
             </motion.p>
@@ -89,7 +89,7 @@ const HeroSection = ({ onGetStarted, onScrollToDemo }: HeroSectionProps) => {
           >
             <div className="relative max-w-md">
               <motion.div 
-                className="absolute -top-6 -left-6 w-full h-full bg-accent rounded-xl"
+                className="absolute -top-6 -left-6 w-full h-full bg-success rounded-xl"
                 animate={{ 
                   y: [0, -10, 0],
                   rotate: [0, 1, 0],
