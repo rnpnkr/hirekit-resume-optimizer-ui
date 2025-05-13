@@ -1,11 +1,9 @@
 
-// This is just a basic mock-up, you would need to implement a real preview component
-import React from 'react';
+import React, { useState } from 'react';
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { ChevronLeft, Download, Send, Mail } from "lucide-react";
 import { Progress } from "@/components/ui/progress";
-import { ArrowLeftIcon, Download } from "lucide-react";
+import { motion } from "framer-motion";
 
 interface PreviewScreenProps {
   onCreateAnother: () => void;
@@ -13,134 +11,176 @@ interface PreviewScreenProps {
   optimizedScore: number;
 }
 
-const PreviewScreen = ({ 
+const PreviewScreen = ({
   onCreateAnother,
   originalScore = 65,
   optimizedScore = 94
 }: PreviewScreenProps) => {
+  const [activeTab, setActiveTab] = useState<'original' | 'optimized'>('optimized');
+  const [showFullScreen, setShowFullScreen] = useState(false);
+  
   return (
-    <div className="container mx-auto px-4 py-8">
-      <Button 
-        variant="outline" 
-        onClick={onCreateAnother} 
-        className="mb-8 gap-2"
+    <div className="container mx-auto px-4 py-8 max-w-6xl">
+      <motion.div 
+        initial={{ opacity: 0, y: 10 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5 }}
+        className="mb-8"
       >
-        <ArrowLeftIcon className="h-4 w-4" /> Create Another
-      </Button>
+        <h1 className="text-3xl font-bold mb-2">Your Optimized Resume</h1>
+        <p className="text-gray-600">Your resume has been tailored to match the job description.</p>
+      </motion.div>
       
-      <h1 className="text-3xl font-bold mb-8 text-center">Your Optimized Resume</h1>
-      
-      <div className="flex flex-col-reverse lg:flex-row gap-8">
-        <div className="lg:w-2/3">
-          <Tabs defaultValue="optimized">
-            <TabsList className="w-full grid grid-cols-2 mb-6">
-              <TabsTrigger value="original">Original</TabsTrigger>
-              <TabsTrigger value="optimized">Optimized</TabsTrigger>
-            </TabsList>
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-10">
+        <motion.div 
+          initial={{ opacity: 0, x: -30 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{ duration: 0.5, delay: 0.2 }}
+          className="bg-white p-6 rounded-xl shadow"
+        >
+          <div className="flex justify-between items-center mb-6">
+            <h2 className="text-xl font-semibold">Job Description</h2>
+          </div>
+          <div className="p-4 bg-gray-50 rounded-lg">
+            <h3 className="font-medium text-lg mb-3">Frontend Developer</h3>
+            <p className="mb-4 text-sm text-gray-500">Tech Solutions Inc • Posted 2 days ago</p>
             
-            <TabsContent value="original">
-              <Card className="min-h-[600px]">
-                <CardHeader>
-                  <CardTitle className="text-xl">Original Resume</CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <div className="border border-gray-200 rounded-lg p-6 min-h-[500px] bg-white">
-                    <h2 className="text-xl font-bold">John Doe</h2>
-                    <p className="text-gray-500 mb-4">Software Engineer</p>
-                    
-                    <div className="mb-4">
-                      <h3 className="text-lg font-semibold">Experience</h3>
-                      <hr className="my-2" />
-                      <p className="font-medium">Senior Developer at Tech Solutions</p>
-                      <p className="text-sm text-gray-500">Jan 2020 - Present</p>
-                      <ul className="list-disc pl-5 mt-2 text-sm">
-                        <li>Built web applications using JavaScript and CSS</li>
-                        <li>Worked on database optimization</li>
-                        <li>Managed junior developers on the team</li>
-                      </ul>
-                    </div>
-                    
-                    <div>
-                      <h3 className="text-lg font-semibold">Skills</h3>
-                      <hr className="my-2" />
-                      <p>JavaScript, HTML, CSS, SQL, PHP</p>
-                    </div>
-                  </div>
-                </CardContent>
-              </Card>
-            </TabsContent>
-            
-            <TabsContent value="optimized">
-              <Card className="min-h-[600px]">
-                <CardHeader>
-                  <CardTitle className="text-xl">Optimized Resume</CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <div className="border border-gray-200 rounded-lg p-6 min-h-[500px] bg-white">
-                    <h2 className="text-xl font-bold">John Doe</h2>
-                    <p className="text-gray-500 mb-4">Frontend Software Engineer</p>
-                    
-                    <div className="mb-4">
-                      <h3 className="text-lg font-semibold">Experience</h3>
-                      <hr className="my-2" />
-                      <p className="font-medium">Senior Frontend Developer at Tech Solutions</p>
-                      <p className="text-sm text-gray-500">Jan 2020 - Present</p>
-                      <ul className="list-disc pl-5 mt-2 text-sm">
-                        <li>Built <span className="bg-green-100 text-green-700 font-medium">responsive web applications</span> using <span className="bg-green-100 text-green-700 font-medium">React, TypeScript</span> and CSS</li>
-                        <li>Implemented <span className="bg-green-100 text-green-700 font-medium">performance optimization</span> techniques for database queries</li>
-                        <li>Led a team of 5 junior developers, improving team productivity by 30%</li>
-                      </ul>
-                    </div>
-                    
-                    <div>
-                      <h3 className="text-lg font-semibold">Skills</h3>
-                      <hr className="my-2" />
-                      <p><span className="bg-green-100 text-green-700 font-medium">React</span>, <span className="bg-green-100 text-green-700 font-medium">TypeScript</span>, JavaScript, HTML, CSS, SQL, PHP</p>
-                    </div>
-                  </div>
-                </CardContent>
-              </Card>
-            </TabsContent>
-          </Tabs>
-        </div>
+            <h4 className="font-medium mb-2">Requirements:</h4>
+            <ul className="space-y-2 mb-6">
+              <li className="flex items-start">
+                <span className="text-primary mr-2">•</span>
+                <span>5+ years of experience with <span className="bg-green-100 text-green-700 px-1 rounded">React.js</span></span>
+              </li>
+              <li className="flex items-start">
+                <span className="text-primary mr-2">•</span>
+                <span>Strong <span className="bg-green-100 text-green-700 px-1 rounded">TypeScript</span> knowledge</span>
+              </li>
+              <li className="flex items-start">
+                <span className="text-primary mr-2">•</span>
+                <span>Experience with <span className="bg-green-100 text-green-700 px-1 rounded">state management</span> libraries (Redux, MobX)</span>
+              </li>
+              <li className="flex items-start">
+                <span className="text-primary mr-2">•</span>
+                <span>Knowledge of <span className="bg-green-100 text-green-700 px-1 rounded">responsive design</span> principles</span>
+              </li>
+            </ul>
+          </div>
+        </motion.div>
         
-        <div className="lg:w-1/3">
-          <Card>
-            <CardHeader>
-              <CardTitle className="text-xl">ATS Compatibility Score</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <div className="space-y-6">
-                <div>
-                  <div className="flex justify-between mb-2">
-                    <span className="font-medium">Original</span>
-                    <span>{originalScore}%</span>
-                  </div>
-                  <Progress value={originalScore} className="h-2 bg-gray-200" indicatorClassName="bg-amber-500" />
-                </div>
-                
-                <div>
-                  <div className="flex justify-between mb-2">
-                    <span className="font-medium">Optimized</span>
-                    <span>{optimizedScore}%</span>
-                  </div>
-                  <Progress value={optimizedScore} className="h-2 bg-gray-200" indicatorClassName="bg-green-500" />
-                </div>
-                
-                <div className="pt-4 text-center">
-                  <p className="text-sm text-gray-500 mb-6">
-                    Your resume has been optimized to be {optimizedScore - originalScore}% more ATS-friendly.
-                  </p>
-                  
-                  <Button variant="default" className="w-full">
-                    <Download className="h-4 w-4 mr-2" /> Download Optimized Resume
-                  </Button>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-        </div>
+        <motion.div 
+          initial={{ opacity: 0, x: 30 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{ duration: 0.5, delay: 0.3 }}
+          className="bg-white p-6 rounded-xl shadow"
+        >
+          <div className="flex justify-between items-center mb-6">
+            <h2 className="text-xl font-semibold">Resume Preview</h2>
+            <div className="flex bg-gray-100 rounded-lg p-1">
+              <Button
+                variant={activeTab === 'original' ? 'default' : 'ghost'}
+                size="sm"
+                onClick={() => setActiveTab('original')}
+                className={`rounded-lg ${activeTab === 'original' ? 'bg-white shadow-sm' : ''} text-sm`}
+              >
+                Original
+              </Button>
+              <Button
+                variant={activeTab === 'optimized' ? 'default' : 'ghost'}
+                size="sm"
+                onClick={() => setActiveTab('optimized')}
+                className={`rounded-lg ${activeTab === 'optimized' ? 'bg-white shadow-sm' : ''} text-sm`}
+              >
+                Optimized
+              </Button>
+            </div>
+          </div>
+          
+          <div className="p-4 bg-gray-50 rounded-lg">
+            <h3 className="font-medium text-lg">Alex Johnson</h3>
+            <p className="text-sm text-gray-600 mb-4">Frontend Developer • alex@example.com • (555) 123-4567</p>
+            
+            <h4 className="font-medium mb-2 text-sm uppercase tracking-wider text-gray-700">Experience</h4>
+            <div className="mb-4">
+              <p className="font-medium">Senior Developer at TechCorp</p>
+              <p className="text-sm text-gray-600 mb-2">2018 - Present</p>
+              
+              {activeTab === 'original' ? (
+                <ul className="text-sm space-y-2 text-gray-700">
+                  <li>• Led frontend development for multiple web applications</li>
+                  <li>• Helped improve site performance and user experience</li>
+                  <li>• Worked with JavaScript and various frameworks</li>
+                  <li>• Designed responsive interfaces for multiple screen sizes</li>
+                </ul>
+              ) : (
+                <ul className="text-sm space-y-2 text-gray-700">
+                  <li>• Led frontend development using <span className="bg-green-100 text-green-700 px-1 rounded">React.js</span> for multiple enterprise web applications</li>
+                  <li>• Implemented strongly-typed components with <span className="bg-green-100 text-green-700 px-1 rounded">TypeScript</span>, reducing bugs by 37%</li>
+                  <li>• Architected scalable <span className="bg-green-100 text-green-700 px-1 rounded">state management</span> solutions using Redux and Context API</li>
+                  <li>• Designed <span className="bg-green-100 text-green-700 px-1 rounded">responsive interfaces</span> using CSS Grid and Flexbox</li>
+                </ul>
+              )}
+            </div>
+          </div>
+        </motion.div>
       </div>
+      
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5, delay: 0.4 }}
+        className="bg-white p-6 rounded-xl shadow mb-6"
+      >
+        <h2 className="text-xl font-semibold mb-4">ATS Compatibility Score</h2>
+        
+        <div className="space-y-6">
+          <div>
+            <div className="flex justify-between mb-2">
+              <span className="text-gray-600">Original Resume</span>
+              <span className="font-medium">{originalScore}%</span>
+            </div>
+            <Progress value={originalScore} className="h-3 bg-gray-200" />
+          </div>
+          
+          <div>
+            <div className="flex justify-between mb-2">
+              <span className="text-gray-600">Optimized Resume</span>
+              <span className="font-medium">{optimizedScore}%</span>
+            </div>
+            <Progress value={optimizedScore} className="h-3 bg-gray-200" />
+          </div>
+        </div>
+      </motion.div>
+      
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5, delay: 0.5 }}
+        className="flex flex-wrap gap-4 justify-center md:justify-between items-center"
+      >
+        <Button
+          onClick={onCreateAnother}
+          variant="outline"
+          className="flex items-center gap-2"
+        >
+          <ChevronLeft size={18} />
+          Create Another
+        </Button>
+        
+        <div className="flex flex-wrap gap-3">
+          <Button variant="outline" className="flex items-center gap-2">
+            <Mail size={18} />
+            Email
+          </Button>
+          <Button variant="outline" className="flex items-center gap-2">
+            <Send size={18} />
+            Share
+          </Button>
+          <Button className="flex items-center gap-2">
+            <Download size={18} />
+            Download PDF
+          </Button>
+        </div>
+      </motion.div>
     </div>
   );
 };
