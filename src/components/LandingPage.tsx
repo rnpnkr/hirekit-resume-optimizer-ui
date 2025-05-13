@@ -5,6 +5,8 @@ import { ArrowRight, ChevronDown, FileText, Award, LayoutGrid, Users, Star } fro
 import { motion } from "framer-motion";
 import { Card } from "@/components/ui/card";
 import { AspectRatio } from "@/components/ui/aspect-ratio";
+import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Progress } from "@/components/ui/progress";
 
 interface LandingPageProps {
   onGetStarted: () => void;
@@ -60,11 +62,75 @@ const testimonials = [
   }
 ];
 
+// Job description data with matching resume content
+const jobDescriptions = [
+  {
+    id: "software-engineer",
+    title: "Frontend Developer",
+    requirements: [
+      "React expertise", 
+      "TypeScript knowledge", 
+      "Responsive design", 
+      "Performance optimization"
+    ],
+    resumeItems: [
+      "Led front-end development using <span class=\"bg-green-100 text-green-700 px-1 rounded\">React.js</span> for the company website",
+      "Built responsive user interfaces with <span class=\"bg-green-100 text-green-700 px-1 rounded\">TypeScript</span> and modern JavaScript",
+      "Implemented <span class=\"bg-green-100 text-green-700 px-1 rounded\">responsive design</span> techniques for all projects",
+      "Applied <span class=\"bg-green-100 text-green-700 px-1 rounded\">performance optimization</span> strategies, reducing loading times by 40%"
+    ],
+    atsScore: 92
+  },
+  {
+    id: "data-scientist",
+    title: "Data Scientist",
+    requirements: [
+      "Python programming", 
+      "Machine learning", 
+      "Data visualization", 
+      "Statistical analysis"
+    ],
+    resumeItems: [
+      "Developed data pipelines using <span class=\"bg-green-100 text-green-700 px-1 rounded\">Python</span> for automated reporting",
+      "Built and deployed <span class=\"bg-green-100 text-green-700 px-1 rounded\">machine learning</span> models for predictive analytics",
+      "Created interactive <span class=\"bg-green-100 text-green-700 px-1 rounded\">data visualizations</span> to communicate findings to stakeholders",
+      "Conducted <span class=\"bg-green-100 text-green-700 px-1 rounded\">statistical analysis</span> to identify trends and business opportunities"
+    ],
+    atsScore: 88
+  },
+  {
+    id: "product-manager",
+    title: "Product Manager",
+    requirements: [
+      "User research", 
+      "Agile methodologies", 
+      "Product roadmapping", 
+      "Stakeholder management"
+    ],
+    resumeItems: [
+      "Conducted extensive <span class=\"bg-green-100 text-green-700 px-1 rounded\">user research</span> to identify customer pain points and needs",
+      "Led product development using <span class=\"bg-green-100 text-green-700 px-1 rounded\">Agile methodologies</span>, improving delivery times by 30%",
+      "Created and maintained <span class=\"bg-green-100 text-green-700 px-1 rounded\">product roadmaps</span> aligned with business objectives",
+      "Managed relationships with key <span class=\"bg-green-100 text-green-700 px-1 rounded\">stakeholders</span> across engineering, design, and business teams"
+    ],
+    atsScore: 94
+  }
+];
+
+// Original resume items before optimization
+const originalResumeItems = [
+  "Led front-end development for the company website",
+  "Built user interfaces with modern JavaScript",
+  "Ensured mobile friendliness of all projects",
+  "Improved loading speed of the company's main platform"
+];
+
 const LandingPage = ({ onGetStarted }: LandingPageProps) => {
   const [expandedFeatures, setExpandedFeatures] = useState<number[]>([]);
   const [activeTestimonial, setActiveTestimonial] = useState(0);
+  const [selectedJob, setSelectedJob] = useState(jobDescriptions[0]);
+  const [showOriginalResume, setShowOriginalResume] = useState(false);
   const demoRef = useRef<HTMLDivElement>(null);
-  const [beforeAfterView, setBeforeAfterView] = useState<'before' | 'after'>('after');
   const [showATSScore, setShowATSScore] = useState(false);
 
   // Toggle feature expansion
@@ -129,12 +195,24 @@ const LandingPage = ({ onGetStarted }: LandingPageProps) => {
               </motion.h1>
               
               <motion.p 
-                className="text-lg text-gray-600 mb-8 max-w-lg"
+                className="text-lg text-gray-600 mb-4 max-w-lg"
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.6, delay: 0.2 }}
               >
-                Our AI agents analyze job descriptions and optimize your resume to increase interview chances by 3x
+                Our AI agents analyze job descriptions and optimize your resume to 
+                <span className="bg-accent/20 text-accent font-semibold px-2 py-1 ml-1 rounded">
+                  increase interview chances by 3x
+                </span>
+              </motion.p>
+              
+              <motion.p 
+                className="text-md text-gray-500 mb-8 max-w-lg"
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.6, delay: 0.3 }}
+              >
+                One resume, optimized for multiple job descriptions - without losing your original formatting.
               </motion.p>
               
               <motion.div 
@@ -143,12 +221,19 @@ const LandingPage = ({ onGetStarted }: LandingPageProps) => {
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.6, delay: 0.4 }}
               >
-                <Button 
-                  onClick={onGetStarted}
-                  className="bg-primary hover:bg-primary-hover text-white px-6 py-6 text-lg"
+                <motion.div
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
+                  className="relative"
                 >
-                  Upload Your Resume <ArrowRight className="ml-2" />
-                </Button>
+                  <Button 
+                    onClick={onGetStarted}
+                    className="bg-primary hover:bg-primary-hover text-white px-6 py-6 text-lg relative z-10"
+                  >
+                    Upload Your Resume <ArrowRight className="ml-2" />
+                  </Button>
+                  <div className="absolute inset-0 bg-primary rounded-md opacity-30 animate-ping duration-1000 z-0"></div>
+                </motion.div>
                 
                 <Button 
                   onClick={scrollToDemo}
@@ -158,6 +243,7 @@ const LandingPage = ({ onGetStarted }: LandingPageProps) => {
                   See How It Works <ChevronDown className="ml-2" />
                 </Button>
               </motion.div>
+              <p className="mt-2 text-sm text-gray-500">No credit card required</p>
             </div>
             
             <motion.div 
@@ -167,7 +253,19 @@ const LandingPage = ({ onGetStarted }: LandingPageProps) => {
               transition={{ duration: 0.8, delay: 0.3 }}
             >
               <div className="relative max-w-md">
-                <div className="absolute -top-6 -left-6 w-full h-full bg-accent rounded-xl"></div>
+                <motion.div 
+                  className="absolute -top-6 -left-6 w-full h-full bg-accent rounded-xl"
+                  animate={{ 
+                    y: [0, -10, 0],
+                    rotate: [0, 1, 0],
+                    scale: [1, 1.02, 1],
+                  }}
+                  transition={{ 
+                    duration: 6,
+                    repeat: Infinity,
+                    repeatType: "reverse" 
+                  }}
+                ></motion.div>
                 <div className="bg-white p-4 rounded-xl shadow-lg relative z-10">
                   <div className="flex items-center justify-center min-h-[300px]">
                     <img 
@@ -198,6 +296,21 @@ const LandingPage = ({ onGetStarted }: LandingPageProps) => {
               </div>
             </motion.div>
           </div>
+          
+          <motion.div 
+            className="absolute bottom-4 left-1/2 transform -translate-x-1/2"
+            animate={{ 
+              y: [0, 10, 0],
+              opacity: [0.3, 1, 0.3],
+            }}
+            transition={{ 
+              duration: 2,
+              repeat: Infinity,
+              repeatType: "reverse" 
+            }}
+          >
+            <ChevronDown className="h-6 w-6 text-gray-400" />
+          </motion.div>
         </div>
       </section>
 
@@ -218,7 +331,7 @@ const LandingPage = ({ onGetStarted }: LandingPageProps) => {
             {features.map((feature, index) => (
               <motion.div 
                 key={feature.id}
-                className="card flex flex-col h-full"
+                className="bg-gray-50 rounded-xl p-6 shadow-sm hover:shadow-md transition-shadow duration-300 flex flex-col h-full"
                 initial={{ opacity: 0, y: 30 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
@@ -247,7 +360,7 @@ const LandingPage = ({ onGetStarted }: LandingPageProps) => {
                         initial={{ opacity: 0, height: 0 }}
                         animate={{ opacity: 1, height: 'auto' }}
                         exit={{ opacity: 0, height: 0 }}
-                        className="mt-4 text-gray-600 bg-gray-50 p-4 rounded-lg"
+                        className="mt-4 text-gray-600 bg-gray-100 p-4 rounded-lg"
                       >
                         {feature.details}
                       </motion.div>
@@ -264,7 +377,7 @@ const LandingPage = ({ onGetStarted }: LandingPageProps) => {
       <section ref={demoRef} className="py-16 bg-[#F8FAFC]">
         <div className="container mx-auto px-4">
           <motion.h2 
-            className="text-3xl font-bold text-center mb-12"
+            className="text-3xl font-bold text-center mb-4"
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
@@ -273,70 +386,92 @@ const LandingPage = ({ onGetStarted }: LandingPageProps) => {
             See How HireKit Transforms Your Resume
           </motion.h2>
           
+          <motion.p
+            className="text-center text-gray-600 mb-12 max-w-2xl mx-auto"
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6, delay: 0.1 }}
+          >
+            One Resume, Tailored for Multiple Jobs
+          </motion.p>
+          
+          <div className="mb-8">
+            <Tabs 
+              defaultValue="software-engineer" 
+              className="w-full"
+              onValueChange={(value) => {
+                const selected = jobDescriptions.find(job => job.id === value);
+                if (selected) setSelectedJob(selected);
+                setShowOriginalResume(false);
+              }}
+            >
+              <TabsList className="grid w-full grid-cols-1 md:grid-cols-3 gap-2">
+                {jobDescriptions.map((job) => (
+                  <TabsTrigger 
+                    key={job.id} 
+                    value={job.id}
+                    className="data-[state=active]:bg-primary data-[state=active]:text-white"
+                  >
+                    {job.title}
+                  </TabsTrigger>
+                ))}
+              </TabsList>
+            </Tabs>
+          </div>
+          
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
             {/* Job Description Panel */}
             <motion.div 
-              className="card"
+              className="bg-white p-6 rounded-xl shadow-sm"
               initial={{ opacity: 0, x: -30 }}
               whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.6 }}
+              key={`jd-${selectedJob.id}`}
+              animate={{ opacity: 1 }}
             >
-              <h3 className="font-semibold text-xl mb-4">Job Description</h3>
+              <h3 className="font-semibold text-xl mb-4">Job Description: {selectedJob.title}</h3>
               <div className="bg-gray-50 p-4 rounded-lg">
-                <h4 className="font-semibold mb-2">Frontend Developer</h4>
-                <p className="text-gray-600 mb-4">We're looking for an experienced frontend developer to join our team.</p>
-                
-                <h5 className="font-semibold">Requirements:</h5>
-                <ul className="space-y-2 mb-4">
-                  <li className="flex items-center">
-                    <span className="w-2 h-2 bg-primary rounded-full mr-2"></span>
-                    <span className="bg-primary/10 text-primary-hover px-2 py-1 rounded">React expertise</span>
-                  </li>
-                  <li className="flex items-center">
-                    <span className="w-2 h-2 bg-primary rounded-full mr-2"></span>
-                    <span className="bg-primary/10 text-primary-hover px-2 py-1 rounded">TypeScript knowledge</span>
-                  </li>
-                  <li className="flex items-center">
-                    <span className="w-2 h-2 bg-primary rounded-full mr-2"></span>
-                    <span className="bg-primary/10 text-primary-hover px-2 py-1 rounded">Responsive design</span>
-                  </li>
-                  <li className="flex items-center">
-                    <span className="w-2 h-2 bg-primary rounded-full mr-2"></span>
-                    <span className="bg-primary/10 text-primary-hover px-2 py-1 rounded">Performance optimization</span>
-                  </li>
+                <h5 className="font-semibold mb-3">Requirements:</h5>
+                <ul className="space-y-3 mb-4">
+                  {selectedJob.requirements.map((req, index) => (
+                    <motion.li 
+                      key={index} 
+                      className="flex items-center"
+                      initial={{ opacity: 0, x: -10 }}
+                      animate={{ opacity: 1, x: 0 }}
+                      transition={{ duration: 0.3, delay: index * 0.1 }}
+                    >
+                      <span className="w-2 h-2 bg-primary rounded-full mr-2"></span>
+                      <span className="bg-primary/10 text-primary-hover px-2 py-1 rounded">
+                        {req}
+                      </span>
+                    </motion.li>
+                  ))}
                 </ul>
               </div>
             </motion.div>
             
             {/* Resume Panel */}
             <motion.div 
-              className="card"
+              className="bg-white p-6 rounded-xl shadow-sm"
               initial={{ opacity: 0, x: 30 }}
               whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.6 }}
+              key={`resume-${selectedJob.id}-${showOriginalResume}`}
             >
               <div className="flex justify-between items-center mb-4">
                 <h3 className="font-semibold text-xl">Resume Preview</h3>
-                <div className="flex space-x-2">
-                  <button 
-                    onClick={() => setBeforeAfterView('before')} 
-                    className={`px-3 py-1 rounded-lg ${beforeAfterView === 'before' 
-                      ? 'bg-secondary text-white' 
-                      : 'bg-gray-100 text-gray-600'}`}
-                  >
-                    Before
-                  </button>
-                  <button 
-                    onClick={() => setBeforeAfterView('after')} 
-                    className={`px-3 py-1 rounded-lg ${beforeAfterView === 'after' 
-                      ? 'bg-primary text-white' 
-                      : 'bg-gray-100 text-gray-600'}`}
-                  >
-                    After
-                  </button>
-                </div>
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={() => setShowOriginalResume(!showOriginalResume)}
+                  className="text-sm"
+                >
+                  {showOriginalResume ? "Show Optimized" : "Show Original"}
+                </Button>
               </div>
               
               <div className="bg-white border border-gray-200 rounded-lg p-4 shadow-sm">
@@ -347,21 +482,26 @@ const LandingPage = ({ onGetStarted }: LandingPageProps) => {
                 <div className="mb-4">
                   <div className="font-medium">Senior Web Developer, TechCorp</div>
                   <div className="text-sm text-gray-600 mb-1">Jan 2020 - Present</div>
-                  <ul className="text-sm space-y-1">
-                    {beforeAfterView === 'before' ? (
-                      <>
-                        <li>Led front-end development for the company website</li>
-                        <li>Built user interfaces with modern JavaScript</li>
-                        <li>Ensured mobile friendliness of all projects</li>
-                        <li>Improved loading speed of the company's main platform</li>
-                      </>
+                  <ul className="text-sm space-y-2">
+                    {showOriginalResume ? (
+                      originalResumeItems.map((item, i) => (
+                        <motion.li key={i}
+                          initial={{ opacity: 0 }}
+                          animate={{ opacity: 1 }}
+                          transition={{ duration: 0.3, delay: i * 0.1 }}
+                        >
+                          {item}
+                        </motion.li>
+                      ))
                     ) : (
-                      <>
-                        <li>Led front-end development using <span className="bg-green-100 text-green-700 px-1 rounded">React.js</span> for the company website</li>
-                        <li>Built responsive user interfaces with <span className="bg-green-100 text-green-700 px-1 rounded">TypeScript</span> and modern JavaScript</li>
-                        <li>Implemented <span className="bg-green-100 text-green-700 px-1 rounded">responsive design</span> techniques for all projects</li>
-                        <li>Implemented <span className="bg-green-100 text-green-700 px-1 rounded">performance optimization</span> strategies, reducing loading times by 40%</li>
-                      </>
+                      selectedJob.resumeItems.map((item, i) => (
+                        <motion.li key={i}
+                          initial={{ opacity: 0 }}
+                          animate={{ opacity: 1 }}
+                          transition={{ duration: 0.3, delay: i * 0.1 }}
+                          dangerouslySetInnerHTML={{ __html: item }}
+                        />
+                      ))
                     )}
                   </ul>
                 </div>
@@ -376,47 +516,56 @@ const LandingPage = ({ onGetStarted }: LandingPageProps) => {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.6, delay: 0.3 }}
+            key={`ats-${selectedJob.id}-${showOriginalResume}`}
           >
             <h3 className="text-lg font-semibold mb-4 text-center">ATS Compatibility Score</h3>
-            <div className="flex items-center mb-2">
-              <span className="text-gray-600 w-20">Before:</span>
-              <div className="flex-1 bg-gray-200 rounded-full h-6 overflow-hidden mr-2">
-                <motion.div 
-                  className="bg-red-400 h-full rounded-full"
-                  initial={{ width: "0%" }}
-                  animate={{ width: showATSScore ? "45%" : "0%" }}
-                  transition={{ duration: 1.5, delay: 0.5 }}
-                ></motion.div>
-              </div>
-              <motion.span 
-                className="font-semibold w-16"
-                initial={{ opacity: 0 }}
-                animate={{ opacity: showATSScore ? 1 : 0 }}
-                transition={{ duration: 0.5, delay: 2 }}
-              >
-                45%
-              </motion.span>
-            </div>
             
-            <div className="flex items-center">
-              <span className="text-gray-600 w-20">After:</span>
-              <div className="flex-1 bg-gray-200 rounded-full h-6 overflow-hidden mr-2">
-                <motion.div 
-                  className="bg-green-500 h-full rounded-full"
-                  initial={{ width: "0%" }}
-                  animate={{ width: showATSScore ? "92%" : "0%" }}
-                  transition={{ duration: 1.5, delay: 2 }}
-                ></motion.div>
+            {showOriginalResume ? (
+              <div className="flex items-center mb-2">
+                <span className="text-gray-600 w-20">Original:</span>
+                <div className="flex-1 h-6 bg-gray-200 rounded-full overflow-hidden mr-2">
+                  <motion.div 
+                    className="h-full bg-red-400 rounded-full"
+                    initial={{ width: "0%" }}
+                    animate={{ width: showATSScore ? "45%" : "0%" }}
+                    transition={{ duration: 1.5, delay: 0.5 }}
+                  ></motion.div>
+                </div>
+                <motion.span 
+                  className="font-semibold w-16"
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: showATSScore ? 1 : 0 }}
+                  transition={{ duration: 0.5, delay: 2 }}
+                >
+                  45%
+                </motion.span>
               </div>
-              <motion.div 
-                className="font-semibold w-16 flex items-center"
-                initial={{ opacity: 0 }}
-                animate={{ opacity: showATSScore ? 1 : 0 }}
-                transition={{ duration: 0.5, delay: 3.5 }}
-              >
-                92% <Star className="h-4 w-4 text-yellow-400 ml-1" />
-              </motion.div>
-            </div>
+            ) : (
+              <div className="flex items-center mb-2">
+                <span className="text-gray-600 w-20">Optimized:</span>
+                <div className="flex-1 bg-gray-200 rounded-full h-6 overflow-hidden mr-2">
+                  <motion.div 
+                    className="bg-green-500 h-full rounded-full"
+                    initial={{ width: "0%" }}
+                    animate={{ width: showATSScore ? `${selectedJob.atsScore}%` : "0%" }}
+                    transition={{ duration: 1.5, delay: 0.5 }}
+                  ></motion.div>
+                </div>
+                <motion.div 
+                  className="font-semibold w-16 flex items-center"
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: showATSScore ? 1 : 0 }}
+                  transition={{ duration: 0.5, delay: 2 }}
+                >
+                  {selectedJob.atsScore}% <Star className="h-4 w-4 text-yellow-400 ml-1" />
+                </motion.div>
+              </div>
+            )}
+            
+            <p className="mt-4 text-sm text-gray-500 text-center">
+              ATS (Applicant Tracking System) scores measure how well your resume matches the job requirements.
+              Higher scores significantly increase your chances of getting past automated screening systems.
+            </p>
           </motion.div>
         </div>
       </section>
@@ -439,7 +588,7 @@ const LandingPage = ({ onGetStarted }: LandingPageProps) => {
               {testimonials.map((testimonial, index) => (
                 <motion.div
                   key={testimonial.id}
-                  className="card text-center p-8 relative"
+                  className="bg-white shadow-sm p-8 rounded-xl text-center relative"
                   initial={{ opacity: 0 }}
                   animate={{ 
                     opacity: activeTestimonial === index ? 1 : 0,
@@ -448,7 +597,7 @@ const LandingPage = ({ onGetStarted }: LandingPageProps) => {
                   transition={{ duration: 0.5 }}
                   style={{ display: activeTestimonial === index ? 'block' : 'none' }}
                 >
-                  <div className="mx-auto bg-gray-200 rounded-full w-16 h-16 mb-4 overflow-hidden">
+                  <div className="mx-auto bg-gray-200 rounded-full w-16 h-16 mb-4 overflow-hidden border-2 border-primary">
                     <AspectRatio ratio={1/1}>
                       <img src={testimonial.image} alt={testimonial.name} className="object-cover w-full h-full" />
                     </AspectRatio>
@@ -479,7 +628,15 @@ const LandingPage = ({ onGetStarted }: LandingPageProps) => {
                 viewport={{ once: true }}
                 transition={{ duration: 0.6 }}
               >
-                <h3 className="text-3xl font-bold text-primary mb-2">3x</h3>
+                <motion.h3 
+                  className="text-3xl font-bold text-primary mb-2"
+                  initial={{ opacity: 0 }}
+                  whileInView={{ opacity: 1 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 2 }}
+                >
+                  3x
+                </motion.h3>
                 <p className="text-gray-600">Higher interview rate</p>
               </motion.div>
               
@@ -490,7 +647,15 @@ const LandingPage = ({ onGetStarted }: LandingPageProps) => {
                 viewport={{ once: true }}
                 transition={{ duration: 0.6, delay: 0.1 }}
               >
-                <h3 className="text-3xl font-bold text-accent mb-2">85%</h3>
+                <motion.h3 
+                  className="text-3xl font-bold text-accent mb-2"
+                  initial={{ opacity: 0 }}
+                  whileInView={{ opacity: 1 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 2 }}
+                >
+                  85%
+                </motion.h3>
                 <p className="text-gray-600">Average ATS score improvement</p>
               </motion.div>
               
@@ -501,7 +666,15 @@ const LandingPage = ({ onGetStarted }: LandingPageProps) => {
                 viewport={{ once: true }}
                 transition={{ duration: 0.6, delay: 0.2 }}
               >
-                <h3 className="text-3xl font-bold text-secondary mb-2">15,000+</h3>
+                <motion.h3 
+                  className="text-3xl font-bold text-secondary mb-2"
+                  initial={{ opacity: 0 }}
+                  whileInView={{ opacity: 1 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 2 }}
+                >
+                  15,000+
+                </motion.h3>
                 <p className="text-gray-600">Successful placements</p>
               </motion.div>
             </div>
@@ -523,15 +696,16 @@ const LandingPage = ({ onGetStarted }: LandingPageProps) => {
           <motion.div
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
+            className="inline-block"
           >
             <Button 
               onClick={onGetStarted}
               className="bg-white text-primary hover:bg-gray-100 text-lg py-6 px-8 shadow-lg"
             >
-              Upload Your Resume <ArrowRight className="ml-2" />
+              Start Optimizing Today <ArrowRight className="ml-2" />
             </Button>
           </motion.div>
-          <p className="mt-4 text-white/80">Free to start • No credit card required</p>
+          <p className="mt-4 text-white/80">Join 15,000+ successful applicants • Free to start • No credit card required</p>
         </motion.div>
       </section>
 
